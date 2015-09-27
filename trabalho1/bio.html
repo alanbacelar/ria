@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Biohancking</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+</head>
+
+
+<body>
+  
+  <script src="./moment.js"></script>
+  <script src="./form_builder.js"></script>
+  <script src="./form_builder_a.js"></script>
+  <script src="./track_form_builder.js"></script>
+
+  <script>
+    var formBuilder = new Biohacking.TrackFormBuilder
+    document.body.appendChild(  formBuilder.render().el )
+  </script>
+</body>
+</html>
