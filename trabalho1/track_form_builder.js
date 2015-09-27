@@ -7,6 +7,7 @@ Biohacking.TrackFormBuilder = function() {
        hidden: true,
        fields: [{
          "class": "display",
+         name: 'msg',
          message: 'Atividade inserida com sucesso!',
          type: 'Display'
        }]
@@ -49,6 +50,28 @@ Biohacking.TrackFormBuilder = function() {
         }]
      }]
   };
+
+  this.afterRender = function() {
+    var input = this.findField('Add').el;
+
+    input.addEventListener("click", function(evt){
+      var activeItem = this.getActiveItem();
+
+      if (activeItem) {
+        this.findField('Add').hide();
+        this.findField('Delete').getSection().show();
+        this.el.querySelector('.list-group').parentElement.style.display = "none";
+
+        // Show values
+        console.log(this.getValues());
+        this.findField('msg').getSection().show();
+      } else {
+        alert('Select an item.');
+      }
+      
+    }.bind(this) );
+  };
   
 };
+
 Biohacking.TrackFormBuilder.prototype = new Biohacking.FormBuilder;

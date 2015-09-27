@@ -20,6 +20,7 @@ Biohacking.Fields.Field = function() {
   
   this._listeners = {};
   this.el;
+  this._section;
   
   this.register = function( events ) {
     Object.keys(events).forEach(function(event) {
@@ -42,6 +43,22 @@ Biohacking.Fields.Field = function() {
   
   this.toggle = function() {
     this.el.style.display = (this.el.style.display === "none")? "flex":"none";
+  };
+
+  this.hide = function() {
+    this.el.style.display = 'none';
+  };
+
+  this.show = function() {
+    this.el.style.display = 'block';
+  };
+
+  this.setSection = function(section) {
+    this._section = section;
+  }
+
+  this.getSection = function() {
+    return this._section;
   };
   
 };
@@ -117,6 +134,11 @@ Biohacking.Fields.Lookup = function() {
   this.render = function(config){
     this.el = document.createElement("ul");
     this.el.setAttribute("class", "list-group");
+
+    if(config.name) { 
+      this.el.setAttribute("id", config.name);
+      this.el.setAttribute("name", config.name);
+    }
     
     this.options = Object.keys(config.options).map(function(key){
       var conf = { 
@@ -151,7 +173,7 @@ Biohacking.Fields.Text = function() {
   this.render = function(field) {
     
     if(field.hidden) {
-      this.toggle();
+      this.hide();
     }
     
     var name = field.id || field.name;
@@ -161,6 +183,7 @@ Biohacking.Fields.Text = function() {
       this.el.setAttribute("id", name);
       this.el.setAttribute("name", name);
     }
+
     this.el.setAttribute("class", "form-control field");
     this.el.setAttribute("placeholder", "Enter text");
     this.el.setAttribute("mandatory", !!field.mandatory );
@@ -182,9 +205,22 @@ Biohacking.Fields.Button = function() {
     this.el.setAttribute("value", field.title || field.name);
     return this;
   };
-  
 };
 
+
+Biohacking.Fields.Display = function() {
+  
+  Biohacking.Fields.Field.apply(this, arguments);
+  
+  this._oldRender = this.render;
+  
+  this.render = function(field) {
+    this._oldRender(field);
+    this.el.setAttribute("class", "alert alert-success");
+    this.el.innerHTML = field.message;
+    return this;
+  };
+};
 
 Biohacking.Fields.Date = function() {
   Biohacking.Fields.Text.apply(this, arguments);
@@ -217,13 +253,32 @@ Biohacking.Section = function() {
   this.fields = [];
   this.el = document.createElement("div");
   this.el.setAttribute("class", "section");
-  
+
   this.createField = function(field) {
       var item = Biohacking.Fields[field.type] || Biohacking.Fields.Field;
-      return (new item).render(field);
+      var fieldItem = new item;
+      fieldItem.setSection(this);
+
+      return fieldItem.render(field);
   };
-  
+
+  this.hide = function() {
+    this.el.style.display = "none";
+  }
+
+  this.show = function() {
+    this.el.style.display = "block";
+  }
+
+  this.toggle = function() {
+    this.el.style.display = (this.el.style.display === "none") ? "flex" : "none";
+  };
+
   this.render = function(section) {
+    if (section.hidden) {
+      this.hide();
+    }
+
     this.fields = section.fields.map(this.createField, this);
     this.fields.forEach(function(field){
       this.el.appendChild( field.el );
@@ -247,15 +302,28 @@ Biohacking.FormBuilder = function(){
   };
   
   this.findField = function(fieldName) {
-    
     return this.sections.reduce(function(founded, section){
       section.fields.forEach(function(field){
         if(fieldName === field.name) founded = field;
       });
       return founded;
     }, null);
-    
   };
+
+  this.getActiveItem = function() {
+    var list = this.el.querySelector('.list-group');
+    return list.querySelector('.active');
+  }
+
+  this.getValues = function() {
+    var activeItem = this.getActiveItem();
+
+    return {
+      logged_at: this.el.querySelector('#logged_at').value,
+      description: this.el.querySelector('#description').value,
+      active_item: activeItem.outerText
+    }
+  }
 
   this.render = function(layout){
     if(layout) this.layout = layout;

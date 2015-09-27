@@ -42,6 +42,7 @@ Biohacking.FormBuilderA = function() {
   this.afterRender = function() {
     var input = this.el.querySelector("#buttondescription");
     var description = this.findField("description");
+
     input.addEventListener("click", function(evt){
       evt.preventDefault();          
       description.toggle();

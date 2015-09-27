@@ -20,8 +20,10 @@
   <script src="./track_form_builder.js"></script>
 
   <script>
-    var formBuilder = new Biohacking.TrackFormBuilder
-    document.body.appendChild(  formBuilder.render().el )
+    var formBuilder = new Biohacking.TrackFormBuilder;
+    var el = formBuilder.render().el;
+    // console.log(formBuilder.findField('Add'));
+    document.body.appendChild(  el );
   </script>
 </body>
 </html>
