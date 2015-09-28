@@ -60,6 +60,9 @@ Biohacking.TrackFormBuilder = function() {
       if (activeItem) {
         this.findField('Add').hide();
         this.findField('Delete').getSection().show();
+        this.findField('logged_at').getSection().show();
+        this.findField('description').getSection().show();
+        
         this.el.querySelector('.list-group').parentElement.style.display = "none";
 
         // Show values

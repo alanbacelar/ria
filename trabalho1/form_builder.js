@@ -42,7 +42,7 @@ Biohacking.Fields.Field = function() {
   };
   
   this.toggle = function() {
-    this.el.style.display = (this.el.style.display === "none")? "flex":"none";
+    this.el.style.display = (this.el.style.display === "none")? "flex" : "none";
   };
 
   this.hide = function() {
@@ -50,7 +50,7 @@ Biohacking.Fields.Field = function() {
   };
 
   this.show = function() {
-    this.el.style.display = 'block';
+    this.el.style.display = 'flex';
   };
 
   this.setSection = function(section) {
@@ -185,7 +185,7 @@ Biohacking.Fields.Text = function() {
     }
 
     this.el.setAttribute("class", "form-control field");
-    this.el.setAttribute("placeholder", "Enter text");
+    this.el.setAttribute("placeholder", field.placeholder || "Enter text");
     this.el.setAttribute("mandatory", !!field.mandatory );
     return this;
   };
@@ -267,7 +267,7 @@ Biohacking.Section = function() {
   }
 
   this.show = function() {
-    this.el.style.display = "block";
+    this.el.style.display = "flex";
   }
 
   this.toggle = function() {
@@ -288,7 +288,7 @@ Biohacking.Section = function() {
   
 };
 
-Biohacking.FormBuilder = function(){
+Biohacking.FormBuilder = function() {
 
   this.layout;
   this.sections = [];
