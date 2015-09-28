@@ -60,7 +60,6 @@ Biohacking.Fields.Field = function() {
   this.getSection = function() {
     return this._section;
   };
-  
 };
 
 Biohacking.Fields.LookupOption = function() {
@@ -117,6 +116,10 @@ Biohacking.Fields.Lookup = function() {
     });
   };
   
+  this.getValue = function() {
+    return this.el.value;
+  };
+
   this.createOption = function(config) {
     var option = new Biohacking.Fields.LookupOption;
     option.register({
@@ -169,6 +172,10 @@ Biohacking.Fields.Text = function() {
   
   this.el.addEventListener("keyup", mandatory.bind(this.el) );
   this.el.addEventListener("change", mandatory.bind(this.el) );
+
+  this.getValue = function() {
+    return this.el.value;
+  };
   
   this.render = function(field) {
     
@@ -226,6 +233,10 @@ Biohacking.Fields.Date = function() {
   Biohacking.Fields.Text.apply(this, arguments);
   
   this._oldRender = this.render;
+
+  this.getValue = function() {
+    return this._oldEl.value;
+  }
   
   this.render = function(field) {
     this._oldRender(field);
@@ -319,8 +330,8 @@ Biohacking.FormBuilder = function() {
     var activeItem = this.getActiveItem();
 
     return {
-      logged_at: this.el.querySelector('#logged_at').value,
-      description: this.el.querySelector('#description').value,
+      logged_at: this.findField('logged_at').getValue(),
+      description: this.findField('description').getValue(),
       active_item: activeItem.outerText
     }
   }
