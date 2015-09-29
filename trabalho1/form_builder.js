@@ -75,6 +75,10 @@ Biohacking.Fields.LookupOption = function() {
   this.select = function() {
     this.el.setAttribute("class", "list-group-item active");
   }
+
+  this.isSelect = function() {
+    return this.el.hasClass("active");
+  }
     
   this.render = function(config) {
     
@@ -120,6 +124,14 @@ Biohacking.Fields.Lookup = function() {
     return this.el.value;
   };
 
+  this.getSelectItem = function() {
+    return this.el.querySelector('.active');
+  };
+
+  this.getSelectItemValue = function() {
+    return this.getSelectItem().outerText;
+  };
+
   this.createOption = function(config) {
     var option = new Biohacking.Fields.LookupOption;
     option.register({
@@ -139,6 +151,7 @@ Biohacking.Fields.Lookup = function() {
     this.el.setAttribute("class", "list-group");
 
     if(config.name) { 
+      this.name = config.name;
       this.el.setAttribute("id", config.name);
       this.el.setAttribute("name", config.name);
     }
@@ -322,17 +335,18 @@ Biohacking.FormBuilder = function() {
   };
 
   this.getActiveItem = function() {
-    var list = this.el.querySelector('.list-group');
-    return list.querySelector('.active');
+    return this.findField('kind').getSelectItem();
+  }
+
+  this.getActiveItemValue = function() {
+    return this.findField('kind').getSelectItemValue();
   }
 
   this.getValues = function() {
-    var activeItem = this.getActiveItem();
-
     return {
       logged_at: this.findField('logged_at').getValue(),
       description: this.findField('description').getValue(),
-      active_item: activeItem.outerText
+      active_item: this.getActiveItemValue()
     }
   }
 

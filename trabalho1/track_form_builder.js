@@ -62,8 +62,7 @@ Biohacking.TrackFormBuilder = function() {
         this.findField('Delete').getSection().show();
         this.findField('logged_at').getSection().show();
         this.findField('description').getSection().show();
-        
-        this.el.querySelector('.list-group').parentElement.style.display = "none";
+        this.findField('kind').hide();
 
         // Show values
         console.log(this.getValues());
